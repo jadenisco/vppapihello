@@ -1,29 +1,28 @@
-# vppapihello
-The Hello World of VPP API
+# VPP API Hello Example
 
-# The link to the wiki description
+This is an simple example of how to use the VPP API. VPP runs in Linux user space. This example will use an installed version of VPP. The VPP API can also be used on with versions of VPP from a build tree. This example will use python3.
 
-https://wiki.fd.io/view/VPP/Python_API
+The VPP wiki also has a description of how to use the VPP API. 
 
+[VPP/Python API](https://wiki.fd.io/view/VPP/Python_API)
 
-# install preresquisites
-sudo apt-get install python-virtualenv
- 
-export VPP=~vpp/
-cd $VPP
- 
-# build vpp
-make bootstrap build
- 
-# create virtualenv
-virtualenv virtualenv
- 
-# (optional) install python packages
-# ipaddress is used by some scripts
-virtualenv/bin/pip install ipaddress
-# nice to have to get the tab completion and other CLI niceties
-virtualenv/bin/pip install scapy
- 
+## Install the Python virtual environment packages
+
+``` console
+$ sudo apt-get install python3-pip
+$ sudo pip3 install virtualenv
+
+```
+
+## Install the virtual environment for this app
+
+I did this from the VSCode terminal. After this you should be asked if you want to use this environment. Say yes.
+
+``` console
+$ python3 -m venv .venv
+
+```
+
 # install vpp python api
 pushd $VPP/src/vpp-api/python/
 $VPP/virtualenv/bin/python setup.py install

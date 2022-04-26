@@ -1,7 +1,48 @@
 #!/bin/env python
 '''
 vpp_hello_world.py
+
+This module will demostrate how to use VPP Python API (VPPAPI) 
+
 '''
+
+import argparse
+import logging
+
+def connect(args):
+    logging.debug(args)
+
+    # Start the connection test here
+
+def main():
+
+    description = "An example of how to use the VPP API"
+    parser = argparse.ArgumentParser(prog='arg-test', description=description,
+        epilog='See "%(prog)s help COMMAND" for help on a specific command.')
+    parser.add_argument('--debug', '-d', action='count', help='Print debug messages')
+    subparsers = parser.add_subparsers()
+    conn_parser = subparsers.add_parser('connect', help='Test the VPP connection')
+    conn_parser.set_defaults(func=connect)
+    args = parser.parse_args()
+
+    if (args.debug):
+        logging.basicConfig(level=logging.DEBUG)
+    else:
+        logging.basicConfig(level=logging.ERROR)
+
+    logging.debug("args: {}".format(args))
+    
+    return(0)
+
+if __name__ == '__main__':
+
+    exit(main())
+
+
+
+
+'''
+
 from __future__ import print_function
  
 import os
@@ -47,3 +88,4 @@ print(r)
 # 0
  
 exit(r)
+'''
