@@ -1,6 +1,8 @@
 {
     "cSpell.words": [
         "ipaddress",
-        "venv"
+        "papi",
+        "venv",
+        "VPPAPI"
     ]
 }
