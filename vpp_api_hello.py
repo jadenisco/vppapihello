@@ -52,6 +52,7 @@ def connect(args):
     vpp.connect("VPP Hello")
     v = vpp.api.show_version()
     logging.info("VPP Version: {}".format(v))
+    print("VPP Version: {}".format(v.version))
 
 def main():
 
@@ -69,7 +70,10 @@ def main():
     else:
         logging.basicConfig(level=logging.ERROR)
 
-    return(args.func(args))
+    if "func" in args:
+        return(args.func(args))
+    else:
+        print("No Arguments were specified. Use -h for help.")
 
 if __name__ == '__main__':
 

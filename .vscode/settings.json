@@ -1,7 +1,9 @@
 {
     "cSpell.words": [
         "ipaddress",
+        "libvppapiclient",
         "papi",
+        "sockclnt",
         "venv",
         "VPPAPI"
     ]
