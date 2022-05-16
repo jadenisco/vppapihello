@@ -68,19 +68,6 @@ DEBUG:root:connect(Namespace(debug=1, func=<function connect at 0x7f1cc8c8e4c0>)
 DEBUG:root:initialize_env()
 DEBUG:root:  vpp_json_dir: /usr/share/vpp/api/core/
 DEBUG:root:  LD_LIBRARY_PATH: /usr/lib/x86_64-linux-gnu/
-DEBUG:vpp_papi.serializer:Unknown union type vl_api_ip4_address_t
-DEBUG:vpp_papi.serializer:Unknown type vl_api_address_union_t
-DEBUG:vpp_papi.serializer:Unknown type vl_api_address_t
-DEBUG:vpp_papi.serializer:Unknown type vl_api_ip4_address_t
-DEBUG:vpp_papi.serializer:Unknown type vl_api_ip6_address_t
-DEBUG:vpp_papi.serializer:Unknown type vl_api_address_union_t
-DEBUG:vpp_papi.serializer:Unknown type vl_api_ip6_address_t
-DEBUG:vpp_papi.serializer:Unknown type vl_api_ip4_address_t
-DEBUG:vpp_papi.serializer:Unknown type vl_api_prefix_t
-DEBUG:vpp_papi.serializer:Unknown union type vl_api_flow_ethernet_t
-DEBUG:vpp_papi.serializer:Unknown type vl_api_flow_t
-DEBUG:vpp_papi.serializer:Unknown union type vl_api_punt_exception_t
-DEBUG:vpp_papi.serializer:Unknown type vl_api_punt_union_t
 DEBUG:root:Connecting to VPP...
 DEBUG:vpp_papi.vpp_papi.VPPApiClient:Calling show_version('context':1,'_vl_msg_id':1348,'client_index':2147483649)
 DEBUG:vpp_papi.vpp_papi.VPPApiClient:Return value: show_version_reply(_0=1349, context=1, retval=0, program='vpe', ve...

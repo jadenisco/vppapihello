@@ -16,7 +16,7 @@ ld_library_path = '/usr/lib/x86_64-linux-gnu/'
 vpp_json_dir = '/usr/share/vpp/api/core/'
 vpp_json_files = []
 
-def initialize_env(args):
+def _initialize_env():
     global vpp_json_files
 
     logging.debug("initialize_env()")
@@ -34,25 +34,67 @@ def initialize_env(args):
         logging.error('No json api files found.')
         exit(-1)
 
-def disconnect(vpp):
+def _disconnect(vpp):
     logging.debug("disconnect({})".format(vpp))
 
     vpp.disconnect()
     logging.debug('Disconnected from VPP...')
 
-def connect(args):
-    logging.debug("connect({})".format(args))
+def _connect():
+    logging.debug("connect()")
 
     # Initialize the environment
-    initialize_env(args)
+    _initialize_env()
 
     # Start the connection
     vpp = VPPApiClient(apifiles=vpp_json_files)
     logging.debug("Connecting to VPP...")
     vpp.connect("VPP Hello")
+
+    return vpp
+ 
+def show_version(args):
+    logging.debug("show_version({})".format(args))
+    
+    vpp = _connect()
+
     v = vpp.api.show_version()
     logging.info("VPP Version: {}".format(v))
     print("VPP Version: {}".format(v.version))
+
+    exit(_disconnect(vpp))
+
+def dump_interfaces(args):
+    logging.debug("dump_interfaces({})".format(args))
+
+    vpp = _connect()
+
+    for interface in vpp.api.sw_interface_dump():
+        logging.debug("Interface: {}".format(interface))
+        print(interface.interface_name)
+
+    exit(_disconnect(vpp))
+
+def show_stats(args):
+    logging.debug("dump_stats({})".format(args))
+
+    vpp = _connect()
+
+# Find a nice way to do async
+
+#   async = True                                                                                                                                                                                                
+
+#r=vpp.register_event_callback(papi_event_handler)
+#pid=os.getpid()
+#sw_ifs = [1,2,3,4,5,6,7]                                                                                                                                                                                  
+#r = vpp.api.want_per_interface_simple_stats(enable_disable=True, sw_ifs=sw_ifs, num=len(sw_ifs), pid=pid)
+#print(r)
+# Wait for some stats                                                                                                                                                                                    
+#time.sleep(60)
+#r = vpp.api.want_per_interface_simple_stats(enable_disable=False)
+
+
+    exit(_disconnect(vpp))
 
 def main():
 
@@ -61,8 +103,12 @@ def main():
         epilog='See "%(prog)s help COMMAND" for help on a specific command.')
     parser.add_argument('--debug', '-d', action='count', help='Print debug messages')
     subparsers = parser.add_subparsers()
-    conn_parser = subparsers.add_parser('connect', help='Test the VPP connection')
-    conn_parser.set_defaults(func=connect)
+    version_parser = subparsers.add_parser('version', help='Get the VPP Version')
+    version_parser.set_defaults(func=show_version)
+    dump_parser = subparsers.add_parser('dump', help='Dump VPP interface information')
+    dump_parser.set_defaults(func=dump_interfaces)
+    dump_parser = subparsers.add_parser('stats', help='Get VPP interface statistics')
+    dump_parser.set_defaults(func=show_stats)
     args = parser.parse_args()
 
     if (args.debug):
