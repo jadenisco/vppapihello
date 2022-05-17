@@ -11,6 +11,8 @@ import argparse
 import logging
 import os
 import fnmatch
+import time
+import json
 
 ld_library_path = '/usr/lib/x86_64-linux-gnu/'
 vpp_json_dir = '/usr/share/vpp/api/core/'
@@ -75,26 +77,47 @@ def dump_interfaces(args):
 
     exit(_disconnect(vpp))
 
+def papi_event_handler(msgname, result):
+    print(msgname)
+    print(result)
+
 def show_stats(args):
     logging.debug("dump_stats({})".format(args))
 
     vpp = _connect()
 
-# Find a nice way to do async
+    r=vpp.register_event_callback(papi_event_handler)
+    
+    pid=os.getpid()
+    sw_ifs = [1,2,3,4,5,6,7]
 
-#   async = True                                                                                                                                                                                                
+    # Need to find api calls
 
-#r=vpp.register_event_callback(papi_event_handler)
-#pid=os.getpid()
-#sw_ifs = [1,2,3,4,5,6,7]                                                                                                                                                                                  
-#r = vpp.api.want_per_interface_simple_stats(enable_disable=True, sw_ifs=sw_ifs, num=len(sw_ifs), pid=pid)
-#print(r)
-# Wait for some stats                                                                                                                                                                                    
-#time.sleep(60)
-#r = vpp.api.want_per_interface_simple_stats(enable_disable=False)
+    vpp.api                                                                                                                                                                          
+    r = vpp.api.want_per_interface_simple_stats(enable_disable=True, sw_ifs=sw_ifs, num=len(sw_ifs), pid=pid)
+    logging.debug(r)
 
+    # Wait for some stats                                                                                                                                                                                    
+    time.sleep(60)
+    r = vpp.api.want_per_interface_simple_stats(enable_disable=False)
 
     exit(_disconnect(vpp))
+
+def show_api(args):
+    logging.debug("show_api({})".format(args))
+
+    _initialize_env()
+
+    for file in vpp_json_files:
+        print("file: {}".format(os.path.basename(file)).split('.')[0])
+        with open(file) as f:
+            jl = json.loads(f.read())
+            logging.debug("  keys: {}".format(jl.keys()))
+            for m in jl['messages']:
+                print("  messages: {}".format(m[0]))
+            f.close()
+
+    return
 
 def main():
 
@@ -107,8 +130,10 @@ def main():
     version_parser.set_defaults(func=show_version)
     dump_parser = subparsers.add_parser('dump', help='Dump VPP interface information')
     dump_parser.set_defaults(func=dump_interfaces)
-    dump_parser = subparsers.add_parser('stats', help='Get VPP interface statistics')
-    dump_parser.set_defaults(func=show_stats)
+    stats_parser = subparsers.add_parser('stats', help='Get VPP interface statistics')
+    stats_parser.set_defaults(func=show_stats)
+    api_parser = subparsers.add_parser('api', help='How the VPP api')
+    api_parser.set_defaults(func=show_api)
     args = parser.parse_args()
 
     if (args.debug):

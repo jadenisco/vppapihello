@@ -12,7 +12,7 @@
             "console": "integratedTerminal",
             "justMyCode": false,
             "sudo": true,
-            "args": ["-d", "stats"]
+            "args": ["api"]
         }
     ]
 }
