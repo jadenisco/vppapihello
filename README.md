@@ -77,3 +77,11 @@ DEBUG:vpp_papi:Cleaning up VPP on exit
 DEBUG:vpp_papi.vpp_papi.VPPApiClient:Calling sockclnt_delete('index':2147483649,'context':2,'_vl_msg_id':17,'client_index':2147483649)
 DEBUG:vpp_papi.vpp_papi.VPPApiClient:Return value: sockclnt_delete_reply(_0=18, context=2, response=1)
 (.venv) #
+
+# Some thoughts 
+
+Look at def _call_vpp(self, i, msgdef, service, **kwargs):
+
+The call is made using the index i and the message definition msgdef
+
+Use type(), vars(), dir()
